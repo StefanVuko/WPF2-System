@@ -12,12 +12,15 @@ public class SeoWebsite {
     private Long id;
     @Column
     private String URL;
+    @Column
+    private String name;
 
     public SeoWebsite() {
 
     }
-    public SeoWebsite(String URL) {
+    public SeoWebsite(String URL, String name) {
         this.URL = URL;
+        this.name = name;
     }
 
     public Long getId() {
@@ -34,5 +37,13 @@ public class SeoWebsite {
 
     public void setURL(String URL) {
         this.URL = URL;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

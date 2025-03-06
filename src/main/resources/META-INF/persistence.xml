@@ -7,7 +7,18 @@
 
       <class>entity.Website</class>
       <class>entity.SeoWebsite</class>
-      <class>entity.SeoData</class>
+      <class>entity.Seobility.SeoResult</class>
+      <class>entity.Seobility.GroupResults</class>
+      <class>entity.Seobility.Hint</class>
+      <class>entity.Seobility.Keyword</class>
+      <class>entity.Seobility.QuickFacts</class>
+      <class>entity.Seobility.ScoreExtern</class>
+      <class>entity.Seobility.ScoreLinks</class>
+      <class>entity.Seobility.ScoreMeta</class>
+      <class>entity.Seobility.ScorePageQuality</class>
+      <class>entity.Seobility.ScoreServer</class>
+      <class>entity.Seobility.ScoreStructure</class>
+
       <properties>
           <property name="jakarta.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver"/>
           <property name="jakarta.persistence.jdbc.url" value="jdbc:hsqldb:file:target/database;shutdown=true"/>

@@ -1,24 +1,44 @@
-import dao.SeoDataDAO;
-import entity.SeoData;
 import entity.SeoWebsite;
 import entity.Website;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class DataFetcher {
-    public static void getSeoData(Website website, SeoWebsite seoWebsite) {
+    private static final String DIRECTORY_PATH = "results/";
+
+    private static void saveSeoData(String data, Website website, SeoWebsite seoWebsite) {
+        final String websiteName = website.getName();
+        final String seoWebsiteName = seoWebsite.getName();
+        final Random rdm = new Random();
+        final int number = rdm.nextInt(10000);
+        final String path = websiteName + "-" + seoWebsiteName + "-" + number + ".json";
+
+        Path directory = Paths.get(DIRECTORY_PATH);
+        Path filePath = directory.resolve(path);
+
         try {
-            String apiKey = "";
-            String urlString = "https://api.seobility.net/en/resellerapi/seocheck?apikey=" + apiKey + "&url=" + website.getURL();
+            Files.write(filePath, data.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+            System.out.println("Saved response to " + path);
+        } catch (Exception e) {
+            System.out.println("Error saving file");
+        }
+    }
+    public static void getSeoData(Website website, SeoWebsite seoWebsite) {
+        final String websiteURL = website.getURL();
+        final String seoWebsiteURL = seoWebsite.getURL();
+        final String apiKey = "";
 
-            URL url = new URL(urlString);
-
+        try {
+            URL url = new URL(seoWebsiteURL + "/seocheck?apikey=" + apiKey + "&url=" + websiteURL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setConnectTimeout(5000);
@@ -26,20 +46,8 @@ public class DataFetcher {
 
             int responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String inputLine;
-                StringBuffer response = new StringBuffer();
-
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
-
-                System.out.println("Response: " + response.toString());
-
-                SeoDataDAO dao = new SeoDataDAO();
-                dao.persist(new SeoData());
-
+                String jsonResponse = new String(connection.getInputStream().readAllBytes());
+                saveSeoData(jsonResponse, website, seoWebsite);
             } else {
                 System.out.println("GET request failed. Response Code: " + responseCode);
             }

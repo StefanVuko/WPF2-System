@@ -1,17 +1,29 @@
 package dao;
 
-import entity.SeoData;
-import entity.SeoWebsite;
+import entity.Seobility.SeoResult;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
-public class SeoDataDAO {
-    public SeoData findById(Long id) {
-        return null;
+public class SeobilityDAO {
+    public SeoResult findById(Long id) {
+
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        SeoResult seoResult = entityManager.find(SeoResult.class, id); // Fetch SeoResult
+
+        if (seoResult != null) {
+            // Force loading hints and keywords (if not using EAGER fetching)
+            seoResult.getHints().size();
+            seoResult.getKeywords().size();
+        }
+
+        entityManager.close();
+        return seoResult;
     }
 
-    public void persist(SeoData seoData) {
+
+    public void persist(SeoResult seoData) {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
@@ -20,7 +32,7 @@ public class SeoDataDAO {
         entityManager.close();
         entityManagerFactory.close();
     }
-    public void delete(SeoData seoData) {
+    public void delete(SeoResult seoData) {
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();

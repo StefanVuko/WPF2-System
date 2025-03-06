@@ -1,32 +1,34 @@
-import dao.SeoDataDAO;
+import comparer.SeobilityComparer;
 import dao.SeoWebsiteDAO;
+import dao.SeobilityDAO;
 import dao.WebsiteDAO;
-import entity.SeoData;
 import entity.SeoWebsite;
+import entity.Seobility.SeoResult;
 import entity.Website;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
 
 public class Main {
     public static void main(String[] args) {
-        Website firstWebsite = new Website("https://www.anandtech.com/");
-        Website secondWebsite = new Website("https://www.borisgloger.com/blog/hardware");
-        WebsiteDAO websiteDAO = new WebsiteDAO();
-        websiteDAO.persist(firstWebsite);
-        websiteDAO.persist(secondWebsite);
 
-        SeoWebsite seoWebsite = new SeoWebsite("https://www.seobility.net/");
+        /*SeoWebsite seoWebsite = new SeoWebsite("https://www.seobility.net/", "seobility");
         SeoWebsiteDAO seoWebsiteDAO = new SeoWebsiteDAO();
         seoWebsiteDAO.persist(seoWebsite);
 
+        Website firstWebsite = new Website("https://www.anandtech.com/", "anandtech");
+        Website secondWebsite = new Website("https://www.borisgloger.com/blog/hardware", "borisgloger");
+        WebsiteDAO websiteDAO = new WebsiteDAO();
+        websiteDAO.persist(firstWebsite);
+        websiteDAO.persist(secondWebsite);*/
 
-        //Here would be the API requests
-        SeoData seoData = new SeoData(95, 5f,
-                5f, 4000, 200, 100, 100,
-                firstWebsite, seoWebsite);
-        SeoDataDAO seoDataDAO = new SeoDataDAO();
-        seoDataDAO.persist(seoData);
+        //DataFetcher.getSeoData(firstWebsite, seoWebsite);
+        //DataFetcher.getSeoData(secondWebsite, seoWebsite);
+
+
+        //DataParser.loadAndSaveSeoResult("anandtech-seobility-4444.json");
+        SeobilityDAO dao = new SeobilityDAO();
+        SeoResult result1 = dao.findById(1L);
+        SeoResult result2 = dao.findById(2L);
+
+        SeobilityComparer.compareSeoResults(result1, result2);
+
     }
 }

@@ -12,13 +12,16 @@ public class Website {
     private Long id;
     @Column
     private String URL;
+    @Column
+    private String name;
 
     public Website() {
 
     }
 
-    public Website(String URL) {
+    public Website(String URL, String name) {
         this.URL = URL;
+        this.name = name;
     }
 
     public Long getId() {
@@ -35,5 +38,12 @@ public class Website {
 
     public void setURL(String URL) {
         this.URL = URL;
+    }
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
